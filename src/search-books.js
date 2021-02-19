@@ -8,7 +8,6 @@ class SearchBooks extends Component {
     state = {
         searchBooks: [],
         query: "",
-        loading: true,
     };
 
     // Handle change of input search.
