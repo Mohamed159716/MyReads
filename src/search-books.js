@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import * as BooksAPI from "./BooksAPI";
 import Book from "./book";
 
 class SearchBooks extends Component {
+    static propTypes = {
+        books: PropTypes.array.isRequired,
+        getAllBooks: PropTypes.func.isRequired,
+    };
+
     state = {
         searchBooks: [],
         query: "",
@@ -26,7 +32,9 @@ class SearchBooks extends Component {
         try {
             query &&
                 (await BooksAPI.search(query).then((books) =>
-                    this.handleShelf(books)
+                    Array.isArray(books)
+                        ? this.handleShelf(books)
+                        : this.handleShelf([])
                 ));
         } catch (err) {
             console.log(err);
@@ -56,9 +64,8 @@ class SearchBooks extends Component {
 
     // Update the book with a new shelf.
     updateShelf = async (book, shelf) => {
-        await BooksAPI.update(book, shelf).then(() =>
-            this.addShelfToState(book, shelf)
-        );
+        await BooksAPI.update(book, shelf);
+        this.addShelfToState(book, shelf);
     };
 
     // Add the shelf key to the Book on the state.
@@ -76,13 +83,12 @@ class SearchBooks extends Component {
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <Link to="/">
-                        <button
-                            className="close-search"
-                            onClick={this.props.getAllBooks}
-                        >
-                            Close
-                        </button>
+                    <Link
+                        className="close-search"
+                        to="/"
+                        onClick={this.props.getAllBooks}
+                    >
+                        Close
                     </Link>
                     <div className="search-books-input-wrapper">
                         <input

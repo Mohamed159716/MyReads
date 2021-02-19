@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Book = ({ book, onUpdate }) => {
     const { title, shelf, authors, imageLinks } = book;
@@ -36,10 +37,23 @@ const Book = ({ book, onUpdate }) => {
                     </div>
                 </div>
                 <div className="book-title">{title}</div>
-                <div className="book-authors">{authors && authors[0]}</div>
+                <div className="book-authors">
+                    {authors &&
+                        authors.map((author, index) => (
+                            <span key={index}>
+                                {author}
+                                <br />
+                            </span>
+                        ))}
+                </div>
             </div>
         </li>
     );
+};
+
+Book.propTypes = {
+    book: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired,
 };
 
 export default Book;

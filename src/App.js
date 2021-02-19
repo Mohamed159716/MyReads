@@ -26,6 +26,21 @@ class BooksApp extends React.Component {
     };
 
     render() {
+        const SHELVES = [
+            {
+                title: "Currently Reading",
+                id: "currentlyReading",
+            },
+            {
+                title: "Want To Read",
+                id: "wantToRead",
+            },
+            {
+                title: "Read",
+                id: "read",
+            },
+        ];
+
         return (
             <div className="app">
                 <Route
@@ -43,6 +58,7 @@ class BooksApp extends React.Component {
                     render={() => (
                         <BookList
                             books={this.state.books}
+                            shelves={SHELVES}
                             onUpdate={this.updateShelf}
                         />
                     )}
